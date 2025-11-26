@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ayesha & Ambar Wedding</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            /* ADD YOUR BODY FONT HERE - e.g., font-family: 'Your Font Name', sans-serif; */
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            color: #39397c;
+            overflow-x: hidden;
+            background: #444444
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .hero-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('background.jpg');
+            background-size: cover;
+            background-position: center;
+            transition: filter 0.3s ease, opacity 0.3s ease;
+            z-index: -1;
+        }
+
+        .hero-background.blurred {
+            filter: blur(5px);
+            opacity: 0.75;
+        }
+
+        .logo-container {
+            position: absolute;
+            top: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20vw;
+            max-width: 200px;
+            min-width: 100px;
+            transition: opacity 0.3s ease;
+        }
+
+        .logo-container.hidden {
+            opacity: 0;
+        }
+
+        .logo-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+            transition: opacity 0.3s ease;
+        }
+
+        .scroll-indicator.hidden {
+            opacity: 0;
+        }
+
+        .chevron {
+            width: 40px;
+            height: 40px;
+            border-left: 3px solid #ffffff;
+            border-bottom: 3px solid #ffffff;
+            transform: rotate(-45deg);
+        }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            40% {
+                transform: translateX(-50%) translateY(-20px);
+            }
+            60% {
+                transform: translateX(-50%) translateY(-10px);
+            }
+        }
+
+        /* Events Section */
+        .events-section {
+            min-height: 100vh;
+            position: relative;
+            padding-top: 60px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .events-section.visible {
+            opacity: 1;
+        }
+
+        .events-container {
+            position: sticky;
+            top: 0;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .date-group {
+            margin-bottom: 30px;
+        }
+
+        .date-header {
+            /* ADD YOUR DATE FONT HERE - e.g., font-family: 'Your Date Font', serif; */
+            font-size: 24px;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #ffffff;
+        }
+
+        .event-item {
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .event-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            cursor: pointer;
+            background: white;
+            transition: background 0.2s ease;
+        }
+
+        .event-header:hover {
+            background: #f8f8f8;
+        }
+
+        .event-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+        }
+
+        .event-name {
+            font-weight: 500;
+            font-size: 18px;
+        }
+
+        .event-time {
+            font-size: 16px;
+            color: #666;
+            margin-right: 10px;
+        }
+
+        .triangle {
+            width: 0;
+            height: 0;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-top: 8px solid #39397c;
+            transition: transform 0.3s ease;
+        }
+
+        .triangle.open {
+            transform: rotate(180deg);
+        }
+
+        .event-details {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            background: #fafafa;
+        }
+
+        .event-details.open {
+            max-height: 300px;
+        }
+
+        .event-content {
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 15px;
+        }
+
+        .venue-address {
+            flex: 1;
+            font-size: 15px;
+            color: #555;
+            line-height: 1.4;
+        }
+
+        .map-button {
+            background: #39397c;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s ease;
+            flex-shrink: 0;
+            min-width: 48px;
+        }
+
+        .map-button:hover {
+            background: #2d2d62;
+        }
+
+        .map-icon {
+            width: 24px;
+            height: 24px;
+        }
+
+        /* Special styling for Wedding event with two locations */
+        .wedding-locations {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .location-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 15px;
+        }
+
+        .location-label {
+            font-weight: 600;
+            font-size: 14px;
+            color: #39397c;
+            margin-bottom: 5px;
+        }
+
+        @media (max-width: 600px) {
+            .events-container {
+                padding: 15px;
+            }
+
+            .date-header {
+                font-size: 20px;
+            }
+
+            .event-name {
+                font-size: 16px;
+            }
+
+            .event-time {
+                font-size: 14px;
+            }
+
+            .event-content {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .map-button {
+                width: 100%;
+            }
+
+            .location-row {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <div class="hero">
+        <div class="hero-background" id="heroBackground"></div>
+        <div class="logo-container" id="logoContainer">
+            <img src="logo.png" alt="Wedding Logo">
+        </div>
+        <div class="scroll-indicator" id="scrollIndicator">
+            <div class="chevron"></div>
+        </div>
+    </div>
+
+    <!-- Events Section -->
+    <div class="events-section" id="eventsSection">
+        <div class="events-container">
+            <!-- 11 December 2025 -->
+            <div class="date-group">
+                <div class="date-header">11 December 2025</div>
+                <div class="event-item">
+                    <div class="event-header" onclick="toggleEvent(this)">
+                        <div class="event-title">
+                            <span class="event-name">Sangeet</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <span class="event-time">6:00 PM</span>
+                            <div class="triangle"></div>
+                        </div>
+                    </div>
+                    <div class="event-details">
+                        <div class="event-content">
+                            <div class="venue-address">The Canvas Farms, Chattarpur</div>
+                            <a href="https://maps.app.goo.gl/SYC63o6uE5uscpcS9" target="_blank">
+                                <button class="map-button">
+                                    <svg class="map-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                        <circle cx="12" cy="10" r="3"></circle>
+                                    </svg>
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 12 December 2025 -->
+            <div class="date-group">
+                <div class="date-header">12 December 2025</div>
+                <div class="event-item">
+                    <div class="event-header" onclick="toggleEvent(this)">
+                        <div class="event-title">
+                            <span class="event-name">Ambar's Haldi</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <span class="event-time">11:30 AM</span>
+                            <div class="triangle"></div>
+                        </div>
+                    </div>
+                    <div class="event-details">
+                        <div class="event-content">
+                            <div class="venue-address">H45 Sector 39 Noida</div>
+                            <a href="https://maps.app.goo.gl/opHCnu6QY1JweunQ7" target="_blank">
+                                <button class="map-button">
+                                    <svg class="map-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                        <circle cx="12" cy="10" r="3"></circle>
+                                    </svg>
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="event-item">
+                    <div class="event-header" onclick="toggleEvent(this)">
+                        <div class="event-title">
+                            <span class="event-name">Ayesha's Haldi</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <span class="event-time">4:00 PM</span>
+                            <div class="triangle"></div>
+                        </div>
+                    </div>
+                    <div class="event-details">
+                        <div class="event-content">
+                            <div class="venue-address">Maidens Hotel, Civil Lines</div>
+                            <a href="https://maps.app.goo.gl/4MMvMwmw5j5SNDRW7" target="_blank">
+                                <button class="map-button">
+                                    <svg class="map-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                        <circle cx="12" cy="10" r="3"></circle>
+                                    </svg>
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 13 December 2025 -->
+            <div class="date-group">
+                <div class="date-header">13 December 2025</div>
+                <div class="event-item">
+                    <div class="event-header" onclick="toggleEvent(this)">
+                        <div class="event-title">
+                            <span class="event-name">Wedding</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <span class="event-time">2:00 PM</span>
+                            <div class="triangle"></div>
+                        </div>
+                    </div>
+                    <div class="event-details">
+                        <div class="event-content">
+                            <div class="wedding-locations">
+                                <div class="location-row">
+                                    <div style="flex: 1;">
+                                        <div class="location-label">Baarat Assembly</div>
+                                        <div class="venue-address">Cafe Coffee Day behind Taj Palace Hotel, Chanakyapuri</div>
+                                    </div>
+                                    <a href="https://maps.app.goo.gl/4N3U2HejSKFHTc8V6" target="_blank">
+                                        <button class="map-button">
+                                            <svg class="map-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                                <circle cx="12" cy="10" r="3"></circle>
+                                            </svg>
+                                        </button>
+                                    </a>
+                                </div>
+                                <div class="location-row">
+                                    <div style="flex: 1;">
+                                        <div class="location-label">Wedding Venue</div>
+                                        <div class="venue-address">Taj Palace Hotel, Chanakyapuri</div>
+                                    </div>
+                                    <a href="https://maps.app.goo.gl/qiEnJ3XCkVXUaZum9" target="_blank">
+                                        <button class="map-button">
+                                            <svg class="map-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                                <circle cx="12" cy="10" r="3"></circle>
+                                            </svg>
+                                        </button>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 14 December 2025 -->
+            <div class="date-group">
+                <div class="date-header">14 December 2025</div>
+                <div class="event-item">
+                    <div class="event-header" onclick="toggleEvent(this)">
+                        <div class="event-title">
+                            <span class="event-name">Reception</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <span class="event-time">12:00 PM</span>
+                            <div class="triangle"></div>
+                        </div>
+                    </div>
+                    <div class="event-details">
+                        <div class="event-content">
+                            <div class="venue-address">Centenary Lawn, Delhi Gymkhana Club</div>
+                            <a href="https://maps.app.goo.gl/ARE1TwY2pzXARVHn9" target="_blank">
+                                <button class="map-button">
+                                    <svg class="map-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                        <circle cx="12" cy="10" r="3"></circle>
+                                    </svg>
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentOpenEvent = null;
+
+        // Scroll effect for background blur and fade
+        window.addEventListener('scroll', function() {
+            const scrollPosition = window.scrollY;
+            const heroHeight = window.innerHeight;
+            const background = document.getElementById('heroBackground');
+            const logo = document.getElementById('logoContainer');
+            const scrollIndicator = document.getElementById('scrollIndicator');
+            const eventsSection = document.getElementById('eventsSection');
+
+            // Snap behavior: either show hero OR show events
+            if (scrollPosition > heroHeight * 0.5) {
+                background.classList.add('blurred');
+                logo.classList.add('hidden');
+                scrollIndicator.classList.add('hidden');
+                eventsSection.classList.add('visible');
+            } else {
+                background.classList.remove('blurred');
+                logo.classList.remove('hidden');
+                scrollIndicator.classList.remove('hidden');
+                eventsSection.classList.remove('visible');
+            }
+        });
+
+        function toggleEvent(header) {
+            const eventItem = header.parentElement;
+            const details = eventItem.querySelector('.event-details');
+            const triangle = header.querySelector('.triangle');
+
+            // Close currently open event if it's different
+            if (currentOpenEvent && currentOpenEvent !== eventItem) {
+                const currentDetails = currentOpenEvent.querySelector('.event-details');
+                const currentTriangle = currentOpenEvent.querySelector('.triangle');
+                currentDetails.classList.remove('open');
+                currentTriangle.classList.remove('open');
+            }
+
+            // Toggle current event
+            if (details.classList.contains('open')) {
+                details.classList.remove('open');
+                triangle.classList.remove('open');
+                currentOpenEvent = null;
+            } else {
+                details.classList.add('open');
+                triangle.classList.add('open');
+                currentOpenEvent = eventItem;
+            }
+        }
+    </script>
+</body>
+</html>
